@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Map";
+}
+
+<head>
+    <title>jVectorMap demo</title>
+    @*<link rel="stylesheet" href="~/Scripts/jquery-jvectormap-2.0.2.css" type="text/css" media="screen" />
+    <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  *@
+</head>
+<body>
+    <div id="map" hidden="hidden"></div>
+    @*<div id="dialog" hidden="hidden" style="z-index:3; background-color:white;"></div>*@
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="btn btn-default" id="btnMoreOptions">More options >></button>
+                </div>
+                <div class="modal-body">
+                    <img id="contentImg" />
+                    <div id="contentDescription"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="aditionalModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+            <script src="~/Scripts/jquery-jvectormap-2.0.2.min.js" type="text/javascript"></script>
+            <script src="~/Scripts/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>
+            <script src="~/Scripts/MapFunctionality.js" type="text/javascript"></script>
+</body>
