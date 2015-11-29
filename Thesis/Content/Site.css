@@ -86,3 +86,8 @@ textarea {
 .modal-changed-pos {
     right: 20%;
 }
+
+.list-data {
+    display:none;
+    list-style-type: none;
+}
