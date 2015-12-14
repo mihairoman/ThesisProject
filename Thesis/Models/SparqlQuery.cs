@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Thesis.Logic;
 
 namespace Thesis.Models
 {
@@ -10,85 +11,60 @@ namespace Thesis.Models
     {
         #region Private members 
 
-        private StringBuilder prefixes;
-
-        private StringBuilder body;
-
-        private StringBuilder filters;
-
         #endregion
 
-        #region Properties  
+        #region Properties 
 
-        public string Prefixes
-        {
-            get
-            {
-                return prefixes.ToString();
-            }
-
-            set
-            {
-                prefixes.AppendLine(value);
-            }
-        }
-
-        public string Body
-        {
-            get
-            {
-                return body.ToString();
-            }
-
-            set
-            {
-                body.Clear();
-                body.Append(value);
-            }
-        }
-
-        public string Filters
-        {
-            get
-            {
-                return filters.ToString();
-            }
-
-            set
-            {
-                filters.AppendLine(value);
-            }
-        }
+        public string queryBody { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public SparqlQuery()
+        public SparqlQuery(string resource, string queryType)
         {
-        }
-
-        public SparqlQuery(string prefix, string body, string filter)
-        {
-            Prefixes = prefix;
-            Body = body;
-            Filters = filter;
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.Append(WebUtils.DEFAULT_PREFIXES);
+            queryBuilder.Append(getSparqlQuery(queryType));
+            queryBody = RefactorQuery(queryBuilder.ToString(),resource);
         }
 
         #endregion
 
         #region Methods
 
-        public string GetSparqlQuery()
+        /// <summary>
+        /// Refactor the query and resource text so it would have valid input
+        /// </summary>
+        /// <param name="query">The query text</param>
+        /// <param name="resource">The querried resoruce</param>
+        /// <returns>A formatted query string</returns>
+        private static string RefactorQuery(string query, string resource)
         {
-            StringBuilder query = new StringBuilder();
-            query.Append(Prefixes);
-            query.Append(Body);
-            query.Append(Filters);
-            query.Append("}");
-            return query.ToString();
+            resource = resource.Replace(" ", "_");
+            query = query.Replace("res_name", resource);
+            return query;
+        }
+
+        /// <summary>
+        /// Returns the query string 
+        /// </summary>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        private static string getSparqlQuery(string queryType)
+        {
+            switch (queryType)
+            {
+                case QueryType.REGION:
+                    return WebUtils.QUERY_REGION;
+                case QueryType.ORGANISATIONS:
+                    return WebUtils.QUERY_ORGANISATIONS;
+                default:
+                    return string.Empty;
+            }
         }
 
         #endregion
     }
+
 }

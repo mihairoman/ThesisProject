@@ -63,14 +63,12 @@ function initMap() {
 };
 
 function GetRegionDescription(regionName) {
-    //var temp = regionName;
-    var url = "/Home/GetQueryResult";
-    var targeturl = '/Home/GetQueryResult?region=' + regionName;
+    var targeturl = '/Home/GetQueryResult?resource=' + regionName + "&" + "queryType=region";
     $.ajax({
         type: "GET",
         url: targeturl,
         //data: targeturl,
-        contentType: "application/json; charset=utf-8",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: "json",
         success: function (response) {
             if (response.results.bindings.length <= 0) {
