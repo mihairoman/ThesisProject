@@ -6,7 +6,54 @@
     <title>Linked data map</title>
 </head>
 <body>
-    <div id="map" hidden="hidden"></div>
+    <div class="container-fluid col-xs-12" id="mainContainer">
+        <div id="map" class="col-xs-7"></div>
+
+        <div id="infoBox" class="col-xs-5">
+            @*<div class="toggle-button"><i class="fa fa-caret-square-o-left fa-3x" data-toggle="collapse" data-target="#infoBox"></i></div>*@
+            <h3 id="title"></h3>
+            <div>
+                <img id="contentImg" style="display:none" />
+                <div id="contentDescription">
+                </div>
+            </div>
+        </div>
+        <div id="footer" class="container-fluid col-xs-7">
+
+            @*<div class="well">*@
+                <div id="footerCarousel" class="carousel slide">
+
+                    <!-- Carousel items -->
+                    <div class="carousel-inner">
+                        @*<div class="item">*@
+                            <div class="row">
+                                <div class="col-xs-3" style="background-color:red;">
+                                    <a href="#x" class="thumbnail" ></a>
+                                </div>
+                                <div class="col-xs-3" style="background-color:red;">
+                                    <a href="#x" class="thumbnail"></a>
+                                </div>
+                                <div class="col-xs-3" style="background-color:red;">
+                                    <a href="#x" class="thumbnail"></a>
+                                </div>
+                                <div class="col-xs-3" style="background-color:red;">
+                                    <a href="#x" class="thumbnail"></a>
+                                </div>
+                            </div>
+                            <!--/row-->
+                        @*</div>*@
+                        <!--/item-->
+                    </div>
+                    <!--/carousel-inner--> <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                </div>
+                <!--/myCarousel-->
+            @*</div>*@
+        </div>
+    </div>
+
+
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -35,31 +82,31 @@
                     <h4 class="modal-title">Error</h4>
                 </div>
                 <div class="modal-body">
-                  <p>Sorry. No data could be found.</p>
+                    <p>Sorry. No data could be found.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-     </div>
+    </div>
 
-        <div class="modal" id="aditionalModal" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button style="display:block;" type="button" class="btn btn-default" id="btnOrganisations">Organisations</button>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+    <div class="modal" id="aditionalModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button style="display:block;" type="button" class="btn btn-default" id="btnOrganisations">Organisations</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
+    </div>
 
 
 
-        <script src="~/Scripts/jquery-jvectormap-2.0.2.min.js" type="text/javascript"></script>
-        <script src="~/Scripts/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>
-        <script src="~/Scripts/MapFunctionality.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-jvectormap-2.0.2.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>
+    <script src="~/Scripts/MapFunctionality.js" type="text/javascript"></script>
 </body>

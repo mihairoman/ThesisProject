@@ -21,7 +21,7 @@ namespace Thesis
                                             "~/Scripts/jquery.validate.js",
                             "~/Scripts/jquery.validate.min.js",
                           "~/Scripts/jquery.validate-vsdoc.js",
-       
+
                             "~/Scripts/jquery.validate.unobtrusive.js",
                             "~/Scripts/jquery.validate.unobtrusive.min.js"));
 
@@ -47,6 +47,8 @@ namespace Thesis
 
             bundles.Add(new StyleBundle("~/Scripts/css").Include(
                      "~/Scripts/*.css"));
+            bundles.Add(new StyleBundle("~/fonts/fontAwesome").Include("~/fonts/font-awesome.min.css"));
+
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
             BundleTable.EnableOptimizations = true;

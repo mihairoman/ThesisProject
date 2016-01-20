@@ -10,30 +10,34 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/Scripts/main.js")
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    @*@Styles.Render("~/fonts/fontAwesome")*@
 </head>
-<body>
+<body hidden="hidden">
     <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </button>*@
+                @Html.ActionLink("Map", "Map", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("Map", "Map", "Home")*@
+                @*@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Map", "Map", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container-fluid body-content" style="width:95%; height:95%">
+    <div class="container-fluid body-content">
         @RenderBody()
-        <hr />
+        @*<hr />
         <footer>
-        </footer>
+        </footer>*@
     </div>
     @RenderSection("Scripts", required: false)
 </body>

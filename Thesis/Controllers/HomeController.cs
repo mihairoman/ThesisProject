@@ -33,6 +33,11 @@ namespace Thesis.Controllers
             return View();
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
+
         [HttpGet]
         public async Task<string> GetQueryResult(string resource, string queryType)
         {
