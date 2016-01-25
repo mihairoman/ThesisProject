@@ -22,22 +22,57 @@ body {
 #footer {
     padding-right: 0;
     padding-left: 0;
-    height: 10%;
+    height: 15%;
     position: absolute;
     z-index: 10;
     bottom: 0%;
-    opacity: 0.5;
-    background-color: #92AAC7;
+    opacity: 0.8;
+    background-color: transparent;
 }
 
-#footerCarousel, #footerCarousel>.carousel-inner, #footerCarousel>.carousel-inner>.row {
-    height: 100%;
-    width: 100%;
+#footerCarousel > .carousel-inner 
+{
+    padding-top: 5%;
 }
 
-#footerCarousel .col-xs-3{
-    height:90%;
+#footerCarousel .carousel-item {
+    transition: all 0.7s ease;
+    border-radius: 80px;
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    text-align: center;
+    /*margin-top: 50px;*/
+    margin-bottom: 5px;
+    position: relative;
+    box-shadow: 1px 1px 10px #888888;
+    margin-left: 5px;
+    margin-right: 5px;
 }
+
+.carousel-item > span > i {
+    position: absolute;
+    right: 22%;
+    top: 25%;
+}
+
+#footerCarousel .carousel-item:hover {
+    transform: translateY(-11px);
+    transition: all 0.8s ease;
+    cursor: pointer;
+    color: gold;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-color: transparent;
+    background-image: none;
+    opacity: 1.0;
+}
+
+    .carousel-control.left:hover, .carousel-control.right:hover {
+        transform: scale(1.1);
+        /*color: black;*/
+    }
 
 #map {
     /*width: 100%;*/
@@ -55,17 +90,27 @@ body {
     height: 100%;
     display: inline-block;
     background-color: #4D648D;
+    background-image: url(images/background_stardust.png);
     color: white;
     text-align: left;
     overflow-y: auto;
-    opacity: 0.8;
+    /*background: #4d648d;
+    background: -moz-linear-gradient(-45deg, #4d648d 0%, #4d648d 5%, #97a5bf 98%, #97a5bf 100%);
+    background: -webkit-gradient(left top, right bottom, color-stop(0%, #4d648d), color-stop(5%, #4d648d), color-stop(98%, #97a5bf), color-stop(100%, #97a5bf));
+    background: -webkit-linear-gradient(-45deg, #4d648d 0%, #4d648d 5%, #97a5bf 98%, #97a5bf 100%);
+    background: -o-linear-gradient(-45deg, #4d648d 0%, #4d648d 5%, #97a5bf 98%, #97a5bf 100%);
+    background: -ms-linear-gradient(-45deg, #4d648d 0%, #4d648d 5%, #97a5bf 98%, #97a5bf 100%);
+    background: linear-gradient(135deg, #4d648d 0%, #4d648d 5%, #97a5bf 98%, #97a5bf 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d648d', endColorstr='#97a5bf', GradientType=1 );*/
 }
 
 ::selection {
-  background: #ff9e35; /* WebKit/Blink Browsers */
+    background: rgb(236, 150, 164);
+    ; /* WebKit/Blink Browsers */
 }
+
 ::-moz-selection {
-  background: #ff9e35; /* Gecko Browsers */
+    background: rgb(236, 150, 164); /* Gecko Browsers */
 }
 
 
@@ -85,12 +130,19 @@ textarea {
 }
 
 nav {
-    z-index : 100;
+    z-index: 100;
+    opacity: 0.8;
 }
 
 .navbar {
     box-shadow: 0px 5px 5px #888888;
 }
+
+    .navbar a:hover {
+        transform: scale(1.1);
+        transition: all 0.3s ease-in-out;
+        color: #ff9e35;
+    }
 
 #contentImg {
     display: inline-block;
@@ -106,47 +158,24 @@ nav {
     text-align: left;
 }
 
-.modal-body {
-    height: 600px;
-    overflow: auto;
-}
-
-.jumbotron {
-    display: none;
-}
-
-/*#myModal {
-     float : left;
-}*/
-#aditionalModal {
-    width: 220px;
-    overflow: hidden;
-}
-
-    #aditionalModal .modal-body {
-        height: 656px;
-    }
-
-.modal-header {
-    text-align: left;
-}
-
-    .modal-header h4 {
-        display: inline-block;
-    }
-
-#btnMoreOptions {
-    display: inline-block;
-    float: right;
-}
-
-.modal-changed-pos {
-    right: 20%;
-}
-
-.list-data {
-    display: none;
+ul.items-list {
+    list-style: none;
     list-style-type: none;
+    padding-left: 0px;
+}
+
+.data-list-item {
+    background-color: rgba(141, 206, 254, 0.10);
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.data-list-item:hover {
+    color: rgb(240, 129, 15);
+    cursor: pointer;
 }
 
 
@@ -196,3 +225,29 @@ nav {
     transform: scale(0.01);
     transition: all 1s ease-in-out;
 }
+
+
+/****** Modals *****************/
+.modal-body {
+    height: 600px;
+    overflow: auto;
+}
+
+#aditionalModal {
+    width: 220px;
+    overflow: hidden;
+}
+
+    #aditionalModal .modal-body {
+        height: 420px;
+    }
+
+.modal-header {
+    text-align: left;
+}
+
+    .modal-header h4 {
+        display: inline-block;
+    }
+
+/************** End of modals ****************/
