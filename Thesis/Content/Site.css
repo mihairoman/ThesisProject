@@ -89,7 +89,7 @@ body {
     padding-bottom: 15px;
     height: 100%;
     display: inline-block;
-    background-color: #4D648D;
+    /*background-color: #4D648D;*/
     background-image: url(images/background_stardust.png);
     color: white;
     text-align: left;
@@ -105,12 +105,14 @@ body {
 }
 
 ::selection {
-    background: rgb(236, 150, 164);
-    ; /* WebKit/Blink Browsers */
+    background-color: rgb(25, 149, 173);
+    color: white;
+     /* WebKit/Blink Browsers */
 }
 
 ::-moz-selection {
-    background: rgb(236, 150, 164); /* Gecko Browsers */
+     background-color: rgb(25, 149, 173);
+    color: white; /* Gecko Browsers */
 }
 
 
@@ -229,18 +231,13 @@ ul.items-list {
 
 /****** Modals *****************/
 .modal-body {
-    height: 600px;
+    height: 420px;
     overflow: auto;
 }
 
-#aditionalModal {
-    width: 220px;
-    overflow: hidden;
+#modalImg {
+    display: none;
 }
-
-    #aditionalModal .modal-body {
-        height: 420px;
-    }
 
 .modal-header {
     text-align: left;

@@ -59,6 +59,8 @@ namespace Thesis.Models
                     return WebUtils.QUERY_REGION;
                 case QueryType.ORGANISATIONS:
                     return WebUtils.QUERY_ORGANISATIONS;
+                case QueryType.ORGANISATIONS_SINGLE:
+                    return WebUtils.QUERY_SINGLE_ORGANISATION;
                 default:
                     return string.Empty;
             }

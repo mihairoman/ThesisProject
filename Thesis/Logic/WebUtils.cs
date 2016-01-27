@@ -5,6 +5,7 @@ namespace Thesis.Logic
     public static class WebUtils
     {
         public const string DBPEDIA_ENDPOINT = "http://dbpedia.org/sparql";
+        public const string SECONDARY_ENDPOINT = "http://lod.openlinksw.com/sparql";
         public const string URL_PARAM = "?query=";
         public const string DEFAULT_PREFIXES = "PREFIX res:<http://dbpedia.org/resource/> \r\n"
                                                + "PREFIX cc:<http://www.w3.org/2000/01/rdf-schema#>\r\n"
@@ -37,19 +38,29 @@ namespace Thesis.Logic
                                                   + "    {?company (cc:label | rdfs:label) ?res_name ; \r\n"
                                                   + "        dbp:headquarters res:res_name . } \r\n"
                                                   + "FILTER(langMatches(lang(?res_name),\"en\")) .}";
-        public const string  QUERY_REGION = "SELECT ?name ?description ?imgLink \r\n"
+        public const string QUERY_REGION = "SELECT ?name ?description ?imgLink \r\n"
                                             + "WHERE \r\n"
                                             + "{ res:res_name cc:label       ?name ; \r\n"
                                             + "               ont:abstract   ?description ; \r\n"
                                             + "               ont:thumbnail  ?imgLink . \r\n"
                                             + "FILTER(langMatches(lang(?name ),\"en\") && langMatches(lang(?description),\"en\") ).}"
                                             + "LIMIT 1";
+
+        public const string QUERY_SINGLE_ORGANISATION = "SELECT ?name ?description (group_concat(distinct ?foundedBy; separator = \",\") as ?founders) "
+                                                       + "(group_concat(distinct ?products; separator = \",\") as ?products) ?foundingDate  ?img \r\n"
+                                                       + "WHERE {  <http://dbpedia.org/resource/res_name> ( dbp:name | cc:label ) ?name ; ont:abstract  ?description. "
+                                                       + "OPTIONAL { res: ont:foundedBy ?foundedBy; ont:product ?products; "
+                                                       + "ont:foundingDate ?foundingDate; ont:thumbnail ?img. } "
+                                                       + "FILTER(langMatches(lang(?name ),\"en\") && langMatches(lang(?description),\"en\") ).} LIMIT 1";
     }
 
     public struct QueryType
     {
         public const string REGION = "region";
         public const string ORGANISATIONS = "organisations";
+        public const string ORGANISATIONS_SINGLE = "organisations_single";
+        public const string PERSONS = "persons";
+        public const string PERSONS_SINGLE = "persons_single";
     }
 
 }

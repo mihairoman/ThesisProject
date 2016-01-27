@@ -20,7 +20,7 @@ namespace Thesis.Controllers
             string query = sparqlQuery.queryBody;
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri(WebUtils.DBPEDIA_ENDPOINT);
+                client.BaseAddress = new Uri("http://dbpedia-live.openlinksw.com/sparql");
                 query = HttpUtility.UrlEncode(query);
                 query = string.Concat(WebUtils.URL_PARAM, query);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -31,9 +31,11 @@ namespace Thesis.Controllers
                     Task<string> contentTask = responseMsg.Content.ReadAsStringAsync();
                     string result = await contentTask;
                     return result;
+                } else
+                {
+                    return "No results found";
                 }
             }
-            return "No results found";
         }
     }
 }

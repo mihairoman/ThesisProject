@@ -117,7 +117,19 @@ function GetListOfItems(regionName, queryType, callBackFn) {
 }
 
 function getResource(resource, type) {
-    var url = "/Map/GetQueryResult?resource=";
+    var url = "/Map/GetQueryResult?resource=" + resource + "&" + "queryType=" + type;
+    $.ajax({
+        type: "GET",
+        url: url,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            triggerDataModal(response);
+        },
+        error: function (e) {
+            handleError();
+        }
+    });
 }
 
 /****************** End of Ajax requests functions **********************/
@@ -153,15 +165,20 @@ $('#organisations').on('click', function (event) {
     if ((currentRegion.organisations === undefined) || (currentRegion.organisations.length === 0)) {
         GetListOfItems(currentRegion.name, "organisations", updateOrganisations);
     } else {
-        updateInfoBoxContent((getStorageItem(currentRegion.name)).organisations, "organisations | businesses");
+        updateInfoBoxContent((getStorageItem(currentRegion.name)).organisations, "organisations");
     }
+});
+
+$(".items-list").on('click', "li.data-list-item.organisations", function (event) {
+    event.preventDefault();
+    getResource($(this).text(), "organisations_single");
 });
 
 function updateOrganisations(response) {
     currentRegion.organisations = response.results.bindings;
     currentRegion.customName = response.head.vars[0];
     updateStorageItem(currentRegion.name, currentRegion);
-    updateInfoBoxContent(currentRegion.organisations, "organisations | businesses");
+    updateInfoBoxContent(currentRegion.organisations, "organisations");
 }
 
 $('#persons').on('click', function (event) {
@@ -192,7 +209,7 @@ function updateInfoBoxContent(data, title) {
     mainList.empty();
     $('#title').text(currentRegion.name + " - " + title);
     for (var i = 0; i < data.length; i++) {
-        var listItem = $('<li class="data-list-item">' + data[i][currentRegion.customName].value + '</li>');
+        var listItem = $('<li class="data-list-item ' + title + '">' + data[i][currentRegion.customName].value + '</li>');
         mainList.append(listItem);
     }
     $('#infoBoxBody').hide();
@@ -209,6 +226,21 @@ function clearInfoBox() {
 
 function handleError() {
     $('#errorModal').modal('toggle');
+}
+
+function triggerDataModal(response) {
+    var resultObj = response.results.bindings[0];
+    if (resultObj === undefined) {
+        handleError();
+        return false;
+    }
+    var modalContent = $('.modal-body>.main-body-content>#contentDescription');
+    modalContent.empty();
+    for (var prop in resultObj) {
+        var valueToBeAdded = resultObj[prop].value ? resultObj[prop].value : "N\\A";
+        modalContent.append('<p>' + '<b>' + prop.capitalizeFirstLetter() + ":" + '</b>' + " " + valueToBeAdded + '</p></br>');
+    }
+    $('#myModal').modal('toggle');
 }
 
 
@@ -278,3 +310,9 @@ function clearLocalStorage() {
 }
 
 /* end of local storage functions */
+
+/**************** Misc functions **************************/
+
+String.prototype.capitalizeFirstLetter = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
