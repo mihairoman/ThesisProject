@@ -76,6 +76,7 @@ function GetRegionDescription(regionName) {
         setInfoBoxMainData(getStorageItem(regionName));
     }
     else {
+        triggerLoadingScreen();
         var targeturl = '/Map/GetQueryResult?resource=' + regionName + "&" + "queryType=region";
         $.ajax({
             type: "GET",
@@ -85,22 +86,24 @@ function GetRegionDescription(regionName) {
             dataType: "json",
             success: function (response) {
                 if (response.results.bindings.length <= 0) {
-                    handleError();
+                    handleError("No data could be found.");
                 }
                 else {
                     initCurrentRegion(response);
                     saveStorageItem(currentRegion.name, currentRegion);
                     setInfoBoxMainData(currentRegion);
                 }
+                $(".overlay").remove();
             },
             error: function (e) {
-                handleError();
+                handleError("No data could be found.");
             }
         });
     }
 };
 
 function GetListOfItems(regionName, queryType, callBackFn) {
+    triggerLoadingScreen();
     var url = "/Map/GetQueryResult?resource=" + regionName + "&" + "queryType=" + queryType;
     $.ajax({
         type: "GET",
@@ -109,14 +112,16 @@ function GetListOfItems(regionName, queryType, callBackFn) {
         dataType: "json",
         success: function (response) {
             callBackFn(response);
+            $(".overlay").remove();
         },
         error: function (e) {
-            handleError();
+            handleError("Data could not be found or transaction took too long.");
         }
     });
 }
 
 function getResource(resource, type) {
+    triggerLoadingScreen();
     var url = "/Map/GetQueryResult?resource=" + resource + "&" + "queryType=" + type;
     $.ajax({
         type: "GET",
@@ -125,9 +130,10 @@ function getResource(resource, type) {
         dataType: "json",
         success: function (response) {
             triggerDataModal(response);
+            $(".overlay").remove();
         },
         error: function (e) {
-            handleError();
+            handleError("No data could be found.");
         }
     });
 }
@@ -142,6 +148,9 @@ function initCurrentRegion(requestResult) {
     currentRegion.description = result.description.value;
     currentRegion.regionImg = result.imgLink.value;
     currentRegion.organisations = [];
+    currentRegion.persons = [];
+    currentRegion.places = [];
+    currentRegion.events = [];
 }
 
 function updateCurrentRegion(newRegion) {
@@ -149,7 +158,10 @@ function updateCurrentRegion(newRegion) {
     currentRegion.description = newRegion.description;
     currentRegion.regionImg = newRegion.regionImg;
     currentRegion.organisations = newRegion.organisations;
-    currentRegion.customName = newRegion.customName;
+    currentRegion.customName = newRegion.name.formatCustomName();
+    currentRegion.persons = newRegion.persons;
+    currentRegion.places = newRegion.places;
+    currentRegion.events = newRegion.events;
 }
 
 
@@ -157,39 +169,73 @@ function updateCurrentRegion(newRegion) {
 
 
 /**************** Footer buttons functions ************************/
+function selectedRegionExists() {
+    if (currentRegion.name === undefined) {
+        handleError("Please select a region from the map first");
+        return false;
+    }
+    return true;
+};
+
 $('#home').on('click', function (event) {
-    setInfoBoxMainData(currentRegion);
+    if (selectedRegionExists()) {
+        setInfoBoxMainData(currentRegion);
+    }
 });
 
 $('#organisations').on('click', function (event) {
-    if ((currentRegion.organisations === undefined) || (currentRegion.organisations.length === 0)) {
-        GetListOfItems(currentRegion.name, "organisations", updateOrganisations);
-    } else {
-        updateInfoBoxContent((getStorageItem(currentRegion.name)).organisations, "organisations");
+    if (selectedRegionExists()) {
+        if ((currentRegion.organisations === undefined) || (currentRegion.organisations.length === 0)) {
+            GetListOfItems(currentRegion.name, "organisations", updateOrganisations);
+        } else {
+            updateInfoBoxContent(currentRegion.organisations, "organisations");
+        }
     }
 });
 
 $(".items-list").on('click', "li.data-list-item.organisations", function (event) {
     event.preventDefault();
-    getResource($(this).text(), "organisations_single");
+    if (selectedRegionExists()) {
+        getResource($(this).attr('data-resource'), "organisations_single");
+    }
 });
 
 function updateOrganisations(response) {
     currentRegion.organisations = response.results.bindings;
-    currentRegion.customName = response.head.vars[0];
+    currentRegion.customName = currentRegion.name.formatCustomName();
     updateStorageItem(currentRegion.name, currentRegion);
     updateInfoBoxContent(currentRegion.organisations, "organisations");
 }
 
 $('#persons').on('click', function (event) {
-    if (currentRegion.organisations.length <= 0) {
-
+    if (selectedRegionExists()) {
+        if (currentRegion.persons === undefined || currentRegion.persons.length <= 0) {
+            GetListOfItems(currentRegion.name, "persons", updatePersons);
+        }
+        else {
+            updateInfoBoxContent(currentRegion.persons, "persons");
+        }
     }
 });
 
-$('#places').on('click', function (event) {
-    if (currentRegion.organisations.length <= 0) {
+$(".items-list").on('click', "li.data-list-item.persons", function (event) {
+    event.preventDefault();
+    if (selectedRegionExists()) {
+        getResource($(this).attr('data-resource'), "persons_single");
+    }
+});
 
+function updatePersons(response) {
+    currentRegion.persons = response.results.bindings;
+    updateStorageItem(currentRegion.name, currentRegion);
+    updateInfoBoxContent(currentRegion.persons, "persons");
+}
+
+$('#places').on('click', function (event) {
+    if (selectedRegionExists()) {
+        if (currentRegion.organisations.length <= 0) {
+
+        }
     }
 });
 /**************** End of footer buttons functions ************************/
@@ -209,7 +255,8 @@ function updateInfoBoxContent(data, title) {
     mainList.empty();
     $('#title').text(currentRegion.name + " - " + title);
     for (var i = 0; i < data.length; i++) {
-        var listItem = $('<li class="data-list-item ' + title + '">' + data[i][currentRegion.customName].value + '</li>');
+        var listItem = $('<li class="data-list-item ' + title + '" data-resource="' + data[i]['resource'].value + '">'
+                       + (data[i][currentRegion.customName] === undefined ? data[i]['name'].value : data[i][currentRegion.customName].value) + '</li>');
         mainList.append(listItem);
     }
     $('#infoBoxBody').hide();
@@ -224,21 +271,34 @@ function clearInfoBox() {
 
 /************** end of functions which update info box data *****************/
 
-function handleError() {
+function handleError(message) {
+    $('#errorModal .modal-body').text(message);
     $('#errorModal').modal('toggle');
+    $(".overlay").remove();
 }
 
 function triggerDataModal(response) {
     var resultObj = response.results.bindings[0];
     if (resultObj === undefined) {
-        handleError();
+        handleError("No data could be found.");
         return false;
     }
     var modalContent = $('.modal-body>.main-body-content>#contentDescription');
     modalContent.empty();
     for (var prop in resultObj) {
         var valueToBeAdded = resultObj[prop].value ? resultObj[prop].value : "N\\A";
-        modalContent.append('<p>' + '<b>' + prop.capitalizeFirstLetter() + ":" + '</b>' + " " + valueToBeAdded + '</p></br>');
+        var link = null;
+        var paragraph = $('<p>' + '<b>' + (prop === "img" ? "" : prop.capitalizeFirstLetter().formatProperty() + ":") + ' </b></p>');
+        if (prop == 'website' || prop == 'wikipedia_article') {
+            $('<a href="' + valueToBeAdded + '" onclick="window.open(this.href); return false;">' + valueToBeAdded + '</a>').insertAfter($(paragraph).find('b'));
+        }
+        else if (prop == 'img') {
+            $('<img style="margin-top:10px;" src="' + valueToBeAdded + '"</img>').insertAfter($(paragraph).find('b'));
+        }
+        else {
+            $('<span>' + valueToBeAdded + '</span>').insertAfter($(paragraph).find('b'));
+        }
+        modalContent.append(paragraph);
     }
     $('#myModal').modal('toggle');
 }
@@ -315,4 +375,20 @@ function clearLocalStorage() {
 
 String.prototype.capitalizeFirstLetter = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+String.prototype.formatProperty = function () {
+    return this.replace("_", " ");
+}
+
+String.prototype.formatCustomName = function () {
+    return this.replace(" ", "_");
+}
+
+function triggerLoadingScreen() {
+    var body = $("body");
+    var overlayDiv = document.createElement('div');
+    var spinner = $('<i class="fa fa-spinner fa-pulse fa-3x" style="color:white; position:absolute; top:48%;"></i>');
+    $(overlayDiv).append(spinner);
+    $(overlayDiv).addClass("overlay").appendTo(body);
 }

@@ -60,7 +60,11 @@ namespace Thesis.Models
                 case QueryType.ORGANISATIONS:
                     return WebUtils.QUERY_ORGANISATIONS;
                 case QueryType.ORGANISATIONS_SINGLE:
-                    return WebUtils.QUERY_SINGLE_ORGANISATION;
+                    return WebUtils.QUERY_SINGLE_ORGANISATION_2;
+                case QueryType.PERSONS:
+                    return WebUtils.QUERY_PERSONS;
+                case QueryType.PERSONS_SINGLE:
+                    return WebUtils.QUERY_PERSONS_SINGLE;
                 default:
                     return string.Empty;
             }

@@ -224,6 +224,7 @@ ul.items-list {
     }
 
 .clicked-icon {
+    backface-visibility: hidden;
     transform: scale(0.01);
     transition: all 1s ease-in-out;
 }
@@ -231,7 +232,7 @@ ul.items-list {
 
 /****** Modals *****************/
 .modal-body {
-    height: 420px;
+    height: 520px;
     overflow: auto;
 }
 
@@ -248,3 +249,13 @@ ul.items-list {
     }
 
 /************** End of modals ****************/
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 10001;
+	background-color: rgba(0, 0, 0, 0.7);
+}
