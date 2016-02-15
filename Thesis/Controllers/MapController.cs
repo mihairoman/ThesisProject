@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Thesis.Logic;
 using Thesis.Models;
+using static Thesis.Logic.WebUtils;
 
 namespace Thesis.Controllers
 {
@@ -23,10 +24,11 @@ namespace Thesis.Controllers
                 query = HttpUtility.UrlEncode(query);
                 query = string.Concat(WebUtils.URL_PARAM, query);
                 if (!queryType.Equals(QueryType.REGION) && !queryType.Equals(QueryType.ORGANISATIONS) 
-                    && !queryType.Equals(QueryType.PERSONS) && !queryType.Equals(QueryType.PERSONS_SINGLE))
+                    && !queryType.Equals(QueryType.PERSONS) && !queryType.Equals(QueryType.PERSONS_SINGLE) && 
+                    !queryType.Equals(QueryType.LOCATIONS))
                 {
-                    //query = string.Concat(query, "&should-sponge=grab-all");
-                    client.BaseAddress = new Uri(WebUtils.FITH_ENDPOINT);
+                    query = string.Concat(query, "&should-sponge=grab-all-seealso");
+                    client.BaseAddress = new Uri(WebUtils.THIRD_ENDPOINT);
                 }
                 else
                 {

@@ -233,11 +233,28 @@ function updatePersons(response) {
 
 $('#places').on('click', function (event) {
     if (selectedRegionExists()) {
-        if (currentRegion.organisations.length <= 0) {
-
+        if (currentRegion.places === undefined || currentRegion.places.length <= 0) {
+            GetListOfItems(currentRegion.name, "locations", updatePlaces);
+        }
+        else {
+            updateInfoBoxContent(currentRegion.places, "places");
         }
     }
 });
+
+function updatePlaces(response) {
+    currentRegion.places = response.results.bindings;
+    updateStorageItem(currentRegion.name, currentRegion);
+    updateInfoBoxContent(currentRegion.places, "places");
+}
+
+$(".items-list").on('click', "li.data-list-item.places", function (event) {
+    event.preventDefault();
+    if (selectedRegionExists()) {
+        getResource($(this).attr('data-resource'), "persons_single");
+    }
+});
+
 /**************** End of footer buttons functions ************************/
 
 /*************** Functions for updating the info box data ****************/
@@ -349,7 +366,7 @@ function updateStorageItem(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
     }
     catch (e) {
-        if (e.name.eq("QuotaExceededError")) {
+        if (e.name == ("QuotaExceededError")) {
             clearLocalStorage();
         } else {
             alert("Not saved!");

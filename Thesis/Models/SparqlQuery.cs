@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Thesis.Logic;
+using static Thesis.Logic.WebUtils;
 
 namespace Thesis.Models
 {
@@ -65,6 +66,10 @@ namespace Thesis.Models
                     return WebUtils.QUERY_PERSONS;
                 case QueryType.PERSONS_SINGLE:
                     return WebUtils.QUERY_PERSONS_SINGLE;
+                case QueryType.LOCATIONS:
+                    return WebUtils.QUERY_LOCATIONS;
+                case QueryType.LOCATIONS_SINGLE:
+                    return WebUtils.QUERY_LOCATIONS_SINGLE;
                 default:
                     return string.Empty;
             }
