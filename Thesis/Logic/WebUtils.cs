@@ -80,6 +80,8 @@ namespace Thesis.Logic
 
         public const string QUERY_LOCATIONS = "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> PREFIX dbo: <http://dbpedia.org/ontology/> PREFIX res: <http://dbpedia.org/resource/> SELECT DISTINCT * WHERE  {  { ?resource a dbo:Place. ?resource rdfs:label ?name. ?resource dbo:country res:res_name . } UNION { ?resource a dbo:Location. ?resource rdfs:label ?name. ?resource dbo:country res:res_name . } FILTER(langMatches(lang(?name),\"en\")).  } ORDER BY ?name LIMIT 1000";
         public const string QUERY_LOCATIONS_SINGLE = "SELECT DISTINCT ?name ?description ?wikipedia_article ?population_total WHERE  {  {  <res_name> rdfs:label ?name; ont:abstract ?description; foaf:isPrimaryTopicOf ?wikipedia_article. } OPTIONAL { <res_name>  dbo:populationTotal ?population_total. } OPTIONAL { <res_name>  ont:thumbnail ?img. } FILTER(langMatches(lang(?name ),\"en\") && langMatches(lang(?description),\"en\") ).} LIMIT 1";
+        public const string QUERY_EVENTS = "SELECT DISTINCT * WHERE { { ?resource a dbo:Event ; rdfs:label ?name; dbp:country \"res_name\"@en.} UNION { ?resource a dbo:Holiday ;  rdfs:label ?name; dbo:country res:res_name. } FILTER(langMatches(lang(?name),\"en\")).   } LIMIT 1000";
+        public const string QUERY_EVENTS_SINGLE = "SELECT DISTINCT ?name ?description ?wikipedia_article ?population_total WHERE  {  {  <res_name> rdfs:label ?name; ont:abstract ?description; foaf:isPrimaryTopicOf ?wikipedia_article. } OPTIONAL { <res_name>  dbo:populationTotal ?population_total. } OPTIONAL { <res_name>  ont:thumbnail ?img. } FILTER(langMatches(lang(?name ),\"en\") && langMatches(lang(?description),\"en\") ).} LIMIT 1";
 
         public struct QueryType
         {
@@ -90,6 +92,8 @@ namespace Thesis.Logic
             public const string PERSONS_SINGLE = "persons_single";
             public const string LOCATIONS = "locations";
             public const string LOCATIONS_SINGLE = "locations_single";
+            public const string EVENTS = "events";
+            public const string EVENTS_SINGLE = "events_single";
         }
 
     }

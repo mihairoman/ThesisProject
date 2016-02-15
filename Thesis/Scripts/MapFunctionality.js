@@ -255,6 +255,30 @@ $(".items-list").on('click', "li.data-list-item.places", function (event) {
     }
 });
 
+$('#events').on('click', function (event) {
+    if (selectedRegionExists()) {
+        if (currentRegion.events === undefined || currentRegion.events.length <= 0) {
+            GetListOfItems(currentRegion.name, "events", updateEvents);
+        }
+        else {
+            updateInfoBoxContent(currentRegion.events, "events");
+        }
+    }
+});
+
+function updateEvents(response) {
+    currentRegion.events = response.results.bindings;
+    updateStorageItem(currentRegion.name, currentRegion);
+    updateInfoBoxContent(currentRegion.events, "events");
+}
+
+$(".items-list").on('click', "li.data-list-item.events", function (event) {
+    event.preventDefault();
+    if (selectedRegionExists()) {
+        getResource($(this).attr('data-resource'), "events_single");
+    }
+});
+
 /**************** End of footer buttons functions ************************/
 
 /*************** Functions for updating the info box data ****************/

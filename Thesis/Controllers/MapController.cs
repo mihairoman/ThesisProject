@@ -25,7 +25,7 @@ namespace Thesis.Controllers
                 query = string.Concat(WebUtils.URL_PARAM, query);
                 if (!queryType.Equals(QueryType.REGION) && !queryType.Equals(QueryType.ORGANISATIONS) 
                     && !queryType.Equals(QueryType.PERSONS) && !queryType.Equals(QueryType.PERSONS_SINGLE) && 
-                    !queryType.Equals(QueryType.LOCATIONS))
+                    !queryType.Equals(QueryType.LOCATIONS) && !queryType.Equals(QueryType.EVENTS))
                 {
                     query = string.Concat(query, "&should-sponge=grab-all-seealso");
                     client.BaseAddress = new Uri(WebUtils.THIRD_ENDPOINT);

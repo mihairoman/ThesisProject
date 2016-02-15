@@ -70,6 +70,10 @@ namespace Thesis.Models
                     return WebUtils.QUERY_LOCATIONS;
                 case QueryType.LOCATIONS_SINGLE:
                     return WebUtils.QUERY_LOCATIONS_SINGLE;
+                case QueryType.EVENTS:
+                    return WebUtils.QUERY_EVENTS;
+                case QueryType.EVENTS_SINGLE:
+                    return WebUtils.QUERY_EVENTS_SINGLE;
                 default:
                     return string.Empty;
             }
